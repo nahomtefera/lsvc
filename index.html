@@ -9,7 +9,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
+    body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; margin: 0;}
     #chat-area {display: none;}
     /* LOGIN AREA */
     input, button {outline: none;}
@@ -20,16 +20,41 @@
     #chat-area {
       display: none;
       font-weight: 400;
-      grid-template-columns:  20% auto;
-      grid-template-rows: 1fr auto 2fr;
+      grid-template-columns:  20% 40% 40%;
+      grid-template-rows: auto;
+      height: 100vh;
       grid-template-areas: 
-        "header header"
-        "sidebar main"
-        "footer footer";
+        "sidebar chat video";
     }
-    #chat-server-title { color: #999; font-weight: 400; grid-area: header;}
+    /* #chat-server-title { color: #999; font-weight: 400; grid-area: header;} */
     #users-container {grid-area: sidebar;}
-    #chat-container {grid-area: main;}
+    #chat-container {
+      position: relative;
+      grid-area: chat;
+      background: #fafafa;
+    }
+    #send-message-container {
+      position: absolute;
+      bottom: 5%;
+      width: 700px;
+      max-width: 80%;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    #chat-messages {    
+    width: 700px;
+    padding: 2em 0;
+    max-width: 80%;
+    margin: auto;
+    }
+    .chat-message {    margin: 1em 0;}
+    #chat-btn { font-size: 1.4em; padding: .6em; color: white;background: #009688;border-color: #009688;border-radius: 10px;}
+    #chat-msg { font-size: 1.4em; padding: .6em; width: 73%; border-radius: 10px; background: white; border: 2px solid #dedede;}
+    /* Online Users */
+    #users-list {list-style: none; padding: 0;}
+    .username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #666; display: flex; justify-content: space-between;}
+    .username-item svg {cursor: pointer;}
  </style>
 </head>
 
@@ -39,19 +64,19 @@
     <button id="user-login-btn">Login</button>
   </div>
   <div id="chat-area">
-    <h1 id="chat-server-title">chat server</h1>
     <div id="users-container">
-      <h3 style="font-weight: 500;">Online Users</h3>
+      <h3 style="    font-weight: 500; padding: 1em .5em; ">Online Users</h3>
       <ul id="users-list">
 
       </ul>
     </div>
     <div id="chat-container">
-      <h3 style="font-weight: 500;">Chat</h3>
       <div id="chat-messages"></div>
 
-      <input type="text" id="chat-msg">
-      <button id="chat-btn">send</button>
+      <div id="send-message-container">
+        <input type="text" id="chat-msg">
+        <button id="chat-btn">Send</button>
+      </div>
     </div>
   </div>
 </body>
@@ -103,15 +128,31 @@
     // sockets
     socket.on('new message', data => {
       chat.innerHTML = chat.innerHTML + '<div class="chat-message">' + '<strong>' + data.user + '</strong>' +
-        " " + data.msg + '</div>'
+        " " + data.msg + '</div> &nbsp;'
     })
+
+    let filmSVG = '<svg height="20px" viewBox="0 -87 472 472" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="m467.101562 26.527344c-3.039062-1.800782-6.796874-1.871094-9.898437-.179688l-108.296875 59.132813v-35.480469c-.03125-27.601562-22.398438-49.96875-50-50h-248.90625c-27.601562.03125-49.96875 22.398438-50 50v197.421875c.03125 27.601563 22.398438 49.96875 50 50h248.90625c27.601562-.03125 49.96875-22.398437 50-50v-34.835937l108.300781 59.132812c3.097657 1.691406 6.859375 1.625 9.894531-.175781 3.039063-1.804688 4.898438-5.074219 4.898438-8.601563v-227.816406c0-3.53125-1.863281-6.796875-4.898438-8.597656zm-138.203124 220.898437c-.015626 16.5625-13.4375 29.980469-30 30h-248.898438c-16.5625-.019531-29.980469-13.4375-30-30v-197.425781c.019531-16.558594 13.4375-29.980469 30-30h248.90625c16.558594.019531 29.980469 13.441406 30 30zm123.101562-1.335937-103.09375-56.289063v-81.535156l103.09375-56.285156zm0 0"/></svg>'
+    
+    function requestVideo(username) {
+      console.log('requesting video to username: ', username)
+    }
 
     socket.on('get users', data => {
       let usersList = ''
       for (let i = 0; i < data.length; i++) {
-        usersList += '<li class="username-item">' + data[i] + '</li>'
+        usersList += '<li class="username-item">' + data[i] + `<div data-username=${data[i]} class="camera-icon">` + filmSVG + '</div>' + '</li>'
       }
       users.innerHTML = usersList
+
+      let activeUsers = $$(".camera-icon");
+      for(let i=0; i<activeUsers.length; i++) {
+        activeUsers[i].addEventListener('click', (e)=>{
+          let username;
+          if(e.target.tagName === 'svg') { username = e.target.parentNode.dataset.username}
+          else {username = e.target.dataset.username}
+          requestVideo(username)
+        })
+      }
     })
   })()
 </script>
