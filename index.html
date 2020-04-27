@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,47 @@
   <!-- <link rel="stylesheet" href="./styles/styles.css"> -->
   <script src="/socket.io/socket.io.js"></script>
   <style>
-    #chat-area {display: none;}
+    #chat-area {
+      display: none;
+    }
+
+    input, button {
+      outline: none;
+    }
+
+    #user-area {
+      padding: 5em;
+      padding-top: 10em;
+      justify-content: center;
+      display: flex;
+    }
+
+    #username {
+      font-size: 1.5em;
+      padding: .6em;
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      border: 1px solid #bbb;
+      background: white;
+      border-right-color: #009688;
+    }
+
+    #user-login-btn {
+      font-size: 1.5em;
+      padding: .6em;
+      color: white;
+      background: #009688;
+      border-color: #009688;
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+    }
   </style>
 </head>
+
 <body>
   <div id="user-area">
-    <input type="text" id="username">
-    <button id="user-login-btn">login</button>
+    <input autocomplete="off" type="text" id="username">
+    <button id="user-login-btn">Login</button>
   </div>
   <div id="chat-area">
     <h1>chat server</h1>
@@ -34,10 +69,15 @@
 </body>
 
 <script>
-  function $(query) { return document.querySelector(query)}
-  function $$(query) { return document.querySelectorAll(query)}
+  function $(query) {
+    return document.querySelector(query)
+  }
 
-  (()=>{
+  function $$(query) {
+    return document.querySelectorAll(query)
+  }
+
+  (() => {
     var socket = io.connect()
     // user login
     let users = $("#users-list");
@@ -53,9 +93,9 @@
       let username = $("#username").value;
 
       // login
-      if(username != '') {
+      if (username != '') {
         socket.emit('new user', username, data => {
-          if(data) {
+          if (data) {
             userArea.style.display = 'none';
             chatArea.style.display = 'block';
           }
@@ -63,7 +103,7 @@
       }
     })
 
-    submitMsg.addEventListener('click', ()=>{
+    submitMsg.addEventListener('click', () => {
       // send message
       let message = $("#chat-msg");
 
@@ -74,16 +114,18 @@
 
     // sockets
     socket.on('new message', data => {
-      chat.innerHTML = chat.innerHTML + '<div class="chat-message">'+ '<strong>' + data.user + '</strong>' + " " + data.msg + '</div>'
+      chat.innerHTML = chat.innerHTML + '<div class="chat-message">' + '<strong>' + data.user + '</strong>' +
+        " " + data.msg + '</div>'
     })
 
     socket.on('get users', data => {
       let usersList = ''
-      for(let i=0; i<data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         usersList += '<li class="username-item">' + data[i] + '</li>'
       }
       users.innerHTML = usersList
     })
   })()
 </script>
+
 </html>
