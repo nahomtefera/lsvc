@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="./styles/styles.css"> -->
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    #chat-area {display: none;}
+  </style>
+</head>
+<body>
+  <div id="user-area">
+    <input type="text" id="username">
+    <button id="user-login-btn">login</button>
+  </div>
+  <div id="chat-area">
+    <h1>chat server</h1>
+    <div class="users-container">
+      <h3>Online Users</h3>
+      <ul id="users-list">
+
+      </ul>
+    </div>
+    <div class="chat-container">
+      <h3>Chat</h3>
+      <div id="chat-messages"></div>
+
+      <input type="text" id="chat-msg">
+      <button id="chat-btn">send</button>
+    </div>
+  </div>
+</body>
+
+<script>
+  function $(query) { return document.querySelector(query)}
+  function $$(query) { return document.querySelectorAll(query)}
+
+  (()=>{
+    var socket = io.connect()
+    // user login
+    let users = $("#users-list");
+    let userArea = $('#user-area')
+    let loginBtn = $("#user-login-btn");
+    // chat messages
+    let chatArea = $("#chat-area")
+    let chat = $("#chat-messages");
+    let submitMsg = $("#chat-btn");
+
+    // event handlers
+    loginBtn.addEventListener('click', () => {
+      let username = $("#username").value;
+
+      // login
+      if(username != '') {
+        socket.emit('new user', username, data => {
+          if(data) {
+            userArea.style.display = 'none';
+            chatArea.style.display = 'block';
+          }
+        })
+      }
+    })
+
+    submitMsg.addEventListener('click', ()=>{
+      // send message
+      let message = $("#chat-msg");
+
+      socket.emit('send message', message.value)
+      message.value = ''
+      console.log('submit')
+    })
+
+    // sockets
+    socket.on('new message', data => {
+      chat.innerHTML = chat.innerHTML + '<div class="chat-message">'+ '<strong>' + data.user + '</strong>' + " " + data.msg + '</div>'
+    })
+
+    socket.on('get users', data => {
+      let usersList = ''
+      for(let i=0; i<data.length; i++) {
+        usersList += '<li class="username-item">' + data[i] + '</li>'
+      }
+      users.innerHTML = usersList
+    })
+  })()
+</script>
+</html>
