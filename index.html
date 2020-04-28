@@ -57,6 +57,7 @@
     .username-item svg {cursor: pointer;}
     /* Video Container */
     #video-container { position: relative; grid-area: video;}
+    .video-stream {max-height: 45vh; max-width: 100%}
  </style>
 </head>
 
@@ -81,7 +82,7 @@
       </div>
     </div>
     <div id="video-container">
-      <video class="video-large" style="max-height: 45vh;" autoplay></video>
+      <video class="video-stream" autoplay></video>
 
     </div>
   </div>
@@ -194,7 +195,7 @@
     pc.onaddstream = function (obj) {
       console.log('pscstream:', obj)
       var vid = document.createElement('video');
-      vid.setAttribute('class', 'video-small');
+      vid.setAttribute('class', 'video-stream');
       vid.setAttribute('autoplay', 'autoplay');
       vid.setAttribute('id', 'video-small');
       document.getElementById('video-container').appendChild(vid);
