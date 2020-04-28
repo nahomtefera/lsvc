@@ -35,14 +35,29 @@ io.sockets.on('connection', (socket) => {
 
   // New User
   socket.on('new user', (data, cb) => {
+    console.log('newuser: ', data)
     cb(true)
     socket.username = data;
-    users.push(socket.username)
+    users.push({"username": socket.username, "id": socket.id})
     updateUsernames()
   })
-
   updateUsernames = ()=>{
     io.sockets.emit('get users', users )
   }
+
+  // VIDEO OFFERS
+  socket.on('make-offer', function (data) {
+    socket.to(data.to).emit('offer-made', {
+      offer: data.offer,
+      socket: socket.id
+    });
+  });
+
+  socket.on('make-answer', function (data) {
+    socket.to(data.to).emit('answer-made', {
+      socket: socket.id,
+      answer: data.answer
+    });
+  });
   
 })

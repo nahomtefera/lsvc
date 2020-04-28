@@ -140,7 +140,7 @@
     socket.on('get users', data => {
       let usersList = ''
       for (let i = 0; i < data.length; i++) {
-        usersList += '<li class="username-item">' + data[i] + `<div data-username=${data[i]} class="camera-icon">` + filmSVG + '</div>' + '</li>'
+        usersList += '<li class="username-item">' + data[i].username + `<div data-id=${data[i].id} class="camera-icon">` + filmSVG + '</div>' + '</li>'
       }
       users.innerHTML = usersList
 
@@ -148,8 +148,8 @@
       for(let i=0; i<activeUsers.length; i++) {
         activeUsers[i].addEventListener('click', (e)=>{
           let username;
-          if(e.target.tagName === 'svg') { username = e.target.parentNode.dataset.username}
-          else {username = e.target.dataset.username}
+          if(e.target.tagName === 'svg') { username = e.target.parentNode.dataset.id}
+          else {username = e.target.dataset.id}
           requestVideo(username)
         })
       }
