@@ -55,6 +55,8 @@
     #users-list {list-style: none; padding: 0;}
     .username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #666; display: flex; justify-content: space-between;}
     .username-item svg {cursor: pointer;}
+    /* Video Container */
+    #video-container { position: relative; grid-area: video;}
  </style>
 </head>
 
@@ -77,6 +79,10 @@
         <input type="text" id="chat-msg">
         <button id="chat-btn">Send</button>
       </div>
+    </div>
+    <div id="video-container">
+      <video class="video-large" style="max-height: 45vh;" autoplay></video>
+
     </div>
   </div>
 </body>
@@ -133,28 +139,117 @@
 
     let filmSVG = '<svg height="20px" viewBox="0 -87 472 472" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="m467.101562 26.527344c-3.039062-1.800782-6.796874-1.871094-9.898437-.179688l-108.296875 59.132813v-35.480469c-.03125-27.601562-22.398438-49.96875-50-50h-248.90625c-27.601562.03125-49.96875 22.398438-50 50v197.421875c.03125 27.601563 22.398438 49.96875 50 50h248.90625c27.601562-.03125 49.96875-22.398437 50-50v-34.835937l108.300781 59.132812c3.097657 1.691406 6.859375 1.625 9.894531-.175781 3.039063-1.804688 4.898438-5.074219 4.898438-8.601563v-227.816406c0-3.53125-1.863281-6.796875-4.898438-8.597656zm-138.203124 220.898437c-.015626 16.5625-13.4375 29.980469-30 30h-248.898438c-16.5625-.019531-29.980469-13.4375-30-30v-197.425781c.019531-16.558594 13.4375-29.980469 30-30h248.90625c16.558594.019531 29.980469 13.441406 30 30zm123.101562-1.335937-103.09375-56.289063v-81.535156l103.09375-56.285156zm0 0"/></svg>'
     
-    function requestVideo(username) {
-      console.log('requesting video to username: ', username)
-    }
-
+    // Get user's data
     socket.on('get users', data => {
       let usersList = ''
       for (let i = 0; i < data.length; i++) {
-        usersList += '<li class="username-item">' + data[i].username + `<div data-id=${data[i].id} class="camera-icon">` + filmSVG + '</div>' + '</li>'
+        usersList += `<li class="username-item" id=${data[i].id}>` + 
+          data[i].username + 
+          `<div data-id=${data[i].id} class="camera-icon">` + 
+          filmSVG + '</div>' + '</li>'
       }
       users.innerHTML = usersList
 
       let activeUsers = $$(".camera-icon");
       for(let i=0; i<activeUsers.length; i++) {
         activeUsers[i].addEventListener('click', (e)=>{
-          let username;
-          if(e.target.tagName === 'svg') { username = e.target.parentNode.dataset.id}
-          else {username = e.target.dataset.id}
-          requestVideo(username)
+          let userId;
+          if(e.target.tagName === 'svg') { userId = e.target.parentNode.dataset.id}
+          else {userId = e.target.dataset.id}
+          createOffer(userId)
         })
       }
-    })
-  })()
+    });
+    // ERROR 
+    function error(err) {
+      console.warn('Error', err);
+    }
+    // PEER CONNECTION
+    var answersFrom = {}, offer;
+
+    var peerConnection = window.RTCPeerConnection ||
+      window.mozRTCPeerConnection ||
+      window.webkitRTCPeerConnection ||
+      window.msRTCPeerConnection;
+
+    var sessionDescription = window.RTCSessionDescription ||
+        window.mozRTCSessionDescription ||
+        window.webkitRTCSessionDescription ||
+        window.msRTCSessionDescription;
+
+    navigator.getUserMedia  = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+
+
+    var pc = new peerConnection({
+      iceServers: [{
+          url: "stun:stun.services.mozilla.com",
+          username: "somename",
+          credential: "somecredentials"
+      }]
+    });
+
+    pc.onaddstream = function (obj) {
+      console.log('pscstream:', obj)
+      var vid = document.createElement('video');
+      vid.setAttribute('class', 'video-small');
+      vid.setAttribute('autoplay', 'autoplay');
+      vid.setAttribute('id', 'video-small');
+      document.getElementById('video-container').appendChild(vid);
+      vid.srcObject = obj.stream;
+    }
+
+    navigator.getUserMedia({video: true, audio: true}, function (stream) {
+      var video = document.querySelector('video');
+      video.srcObject = stream;
+      pc.addStream(stream);
+    }, error);
+
+    // REQUEST VIDEO
+    function createOffer(userId) {
+      console.log('requesting video to userId: ', userId)
+      pc.createOffer(function (offer) {
+        console.log('making offer: ', offer)
+          pc.setLocalDescription(new sessionDescription(offer), function () {
+              socket.emit('make-offer', {
+                  offer: offer,
+                  to: userId
+              });
+          }, error);
+      }, error);
+    }
+
+    // SOCKET VIDEO REQUEST
+    socket.on('answer-made', function (data) {
+      pc.setRemoteDescription(new sessionDescription(data.answer), function () {
+          document.getElementById(data.socket).classList.add('active');
+          if (!answersFrom[data.socket]) {
+              createOffer(data.socket);
+              answersFrom[data.socket] = true;
+          }
+      }, error);
+    });
+
+    socket.on('offer-made', function (data) {
+      offer = data.offer;
+      console.log(offer)
+
+      pc.setRemoteDescription(new sessionDescription(data.offer), function () {
+          pc.createAnswer(function (answer) {
+              pc.setLocalDescription(new sessionDescription(answer), function () {
+                  console.log('MAKE ANSWER');
+                  socket.emit('make-answer', {
+                      answer: answer,
+                      to: data.socket
+                  });
+              }, error);
+          }, error);
+      }, error);
+    });
+
+  })() // END
 </script>
 
 </html>
