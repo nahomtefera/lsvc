@@ -8,9 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "*",
     "nodemon": "^2.0.3",
-    "socket.io": "*"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "author": "Nahom Endale",
   "license": "ISC"

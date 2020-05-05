@@ -1,0 +1,6 @@
+#chat-area {display: none;}
+/* LOGIN AREA */
+input, button {outline: none;}
+.login-container {padding: 5em;padding-top: 10em;justify-content: center;display: flex;}
+#username {max-width: 80%; font-size: 1.5em;padding: .6em;border-bottom-left-radius: 10px;border-top-left-radius: 10px;border: 1px solid #bbb;background: white;border-right-color: #009688;}
+#user-login-btn {font-size: 1.5em;padding: .6em;color: white;background: #009688;border-color: #009688;border-bottom-right-radius: 10px;border-top-right-radius: 10px;}
