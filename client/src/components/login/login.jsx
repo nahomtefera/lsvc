@@ -5,18 +5,14 @@ import {socket} from '../socketComp/socketComp'
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      username: ''
-    }
+    this.state = { username: ''}
   }
 
-  handleChange = (value, target) => {
-    this.setState({[target]: value })
-  } 
+  handleChange = (value, target) => {this.setState({[target]: value })} 
 
   login = () =>{
     let username = this.state.username;
-
+    // If username field is not blank emit new user
     if (username != '') {
       socket.emit('new user', username, data => {
         if (data) {

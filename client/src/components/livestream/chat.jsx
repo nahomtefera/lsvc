@@ -9,7 +9,7 @@ class Chat extends Component {
 
   componentDidMount() {
     let newMessages = this.state.chatMessages;
-
+    // when a message is received update chatMessages
     socket.on('new message', data => {
       newMessages.push(data)
       this.setState({chatMessages: newMessages})
@@ -18,10 +18,7 @@ class Chat extends Component {
 
   handleChange = (value, target) => {this.setState({[target]: value })} 
 
-  sendMessage = (message) => {
-    socket.emit('send message', message)
-    this.setState({message: ''})
-  }
+  sendMessage = (message) => { socket.emit('send message', message); this.setState({message: ''}) }
 
   render() { 
     let message = this.state.message;
