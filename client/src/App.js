@@ -15,18 +15,18 @@ class App extends Component {
     this.state = { 
       isLogged: false
     }
+  }
+
+  componentDidMount(){
     socket = io.connect('http://localhost:8080')
   }
 
   login = (username) => {
-    
     if (username != '') {
       socket.emit('new user', username, data => {
         if (data) {
           console.log(data)
           this.setState({isLogged: true})
-          // userArea.style.display = 'none';
-          // chatArea.style.display = 'grid';
         }
       })
     }
