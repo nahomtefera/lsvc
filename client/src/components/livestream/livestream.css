@@ -7,8 +7,12 @@
   grid-template-areas: 
     "sidebar chat video";
 }
-
+/* Users */
 .users-container {grid-area: sidebar;}
+.users-list {list-style: none; padding: 0;}
+.username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #666; display: flex; justify-content: space-between;}
+.username-item img {cursor: pointer;}
+
 .chat-container {
   position: relative;
   grid-area: chat;
