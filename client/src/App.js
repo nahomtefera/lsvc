@@ -1,44 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
-// socket.io
-import io from "socket.io-client";
-
-// import io from 'socket.io'
 // Components
-import Login from './components/login/login'
-
-let socket;
+import Login from './components/login/login';
+import {Socket} from './components/socketComp/socketComp';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      isLogged: false
+      logged: false
     }
   }
 
-  componentDidMount(){
-    socket = io.connect('http://localhost:8080')
-  }
-
-  login = (username) => {
-    if (username != '') {
-      socket.emit('new user', username, data => {
-        if (data) {
-          console.log(data)
-          this.setState({isLogged: true})
-        }
-      })
-    }
-  }
+  isLogged = () => {this.setState({logged: true})}
 
   render() { 
-    let isLogged = this.state.isLogged;
+    let logged = this.state.logged;
 
     return ( 
       <div className="App">
-        {
-          isLogged ? null : <Login login = {this.login} />
+        <Socket />
+        { 
+          !logged 
+            ? <Login isLogged = {this.isLogged} /> 
+            : null 
         }
       </div>
     );
