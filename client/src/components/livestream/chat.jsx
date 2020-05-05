@@ -8,7 +8,12 @@ class Chat extends Component {
   render() { 
     return ( 
       <div className='chat-container'>
-        chat
+          <div className="chat-messages"></div>
+
+        <div className="send-message-container">
+          <input type="text" className="chat-msg" />
+          <button className="chat-btn">Send</button>
+        </div>
       </div>
     );
   }

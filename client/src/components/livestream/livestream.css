@@ -12,12 +12,14 @@
 .users-list {list-style: none; padding: 0;}
 .username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #666; display: flex; justify-content: space-between;}
 .username-item img {cursor: pointer;}
-
-.chat-container {
-  position: relative;
-  grid-area: chat;
-  background: #fafafa;
-}
+/* Chat */
+.chat-container {position: relative;grid-area: chat;background: #fafafa;}
+.send-message-container {position: absolute;bottom: 5%;width: 700px;max-width: 80%;left: 0;right: 0;margin: auto; display: flex;}
+.chat-messages {width: 700px;padding: 2em 0;max-width: 80%;margin: auto;}
+.chat-message {    margin: 1em 0;}
+.chat-btn { font-size: 1.4em; padding: .6em; color: white;background: #009688;border-color: #009688;border-radius: 10px;}
+.chat-msg { font-size: 1.4em; padding: .6em; width: 73%; border-radius: 10px; background: white; border: 2px solid #dedede;}
+/* Videostream */
 .videostream-container {
   position: relative; grid-area: video;
 }
