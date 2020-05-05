@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 const server =  require("http").createServer(app);
 const io = require("socket.io").listen(server); 
 
@@ -9,9 +10,12 @@ let connections = []
 server.listen(process.env.PORT || 8080)
 console.log('server running on port 8080')
 
-app.get('/', (req, res)=>{
-  res.sendFile(__dirname + "/index.html")
-})
+// Connect to react client
+app.use(express.static(path.join(__dirname, "client/build")))
+
+// app.get('/', (req, res)=>{
+//   res.sendFile(__dirname + "/client/build/index.html")
+// })
 
 // Sockets 
 
