@@ -22,4 +22,14 @@
 /* Videostream */
 .videostream-container {
   position: relative; grid-area: video;
+  max-width: 100%;
+}
+#video-container {
+  max-width: 50%;
+  display: flex;
+  /* flex-wrap: wrap; */
+}
+
+#video-container video {
+  max-width: 100%;
 }

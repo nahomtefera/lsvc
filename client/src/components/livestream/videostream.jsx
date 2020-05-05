@@ -5,10 +5,13 @@ class VideoStream extends Component {
     super(props);
     this.state = {  }
   }
+
   render() { 
     return ( 
       <div className='videostream-container'>
-        videostream
+        <div id="video-container">
+          <video className="video-stream" autoPlay muted></video>
+        </div>
       </div>
     );
   }
