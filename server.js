@@ -12,10 +12,12 @@ server.listen(process.env.PORT || 8080)
 console.log('server running on port 8080')
 
 // Connect to react client
-app.use(express.static(path.join(__dirname, "client/build")))
+app.use(express.static(path.join(__dirname, "/client/build")))
 
 // app.use(cors({ origin: "*" }))
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
+// app.get('/'express.static(path.join(__dirname, "client/build")))
 
 
 // Sockets 
