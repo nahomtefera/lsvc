@@ -17,7 +17,9 @@ app.use(express.static(path.join(__dirname, "/client/build")))
 // app.use(cors({ origin: "*" }))
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
-// app.get('/'express.static(path.join(__dirname, "client/build")))
+// app.get('/', (req, res)=>{
+//   res.sendFile(__dirname + "/client/build/index.html")
+// })
 
 
 // Sockets 
