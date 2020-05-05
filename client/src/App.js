@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 // Components
+import {Socket} from './components/socketComp/socketComp'; // socket connection
 import Login from './components/login/login';
-import {Socket} from './components/socketComp/socketComp';
+import Livestream from './components/livestream/livestream';
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class App extends Component {
         { 
           !logged 
             ? <Login isLogged = {this.isLogged} /> 
-            : null 
+            : <Livestream /> 
         }
       </div>
     );
