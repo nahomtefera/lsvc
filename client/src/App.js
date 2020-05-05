@@ -7,16 +7,29 @@ import io from "socket.io-client";
 // Components
 import Login from './components/login/login'
 
+let socket;
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       isLogged: false
     }
+    socket = io.connect('http://localhost:8080')
   }
 
-  componentDidMount() {
-    let socket = io.connect('http://localhost:8080')
+  login = (username) => {
+    
+    if (username != '') {
+      socket.emit('new user', username, data => {
+        if (data) {
+          console.log(data)
+          this.setState({isLogged: true})
+          // userArea.style.display = 'none';
+          // chatArea.style.display = 'grid';
+        }
+      })
+    }
   }
 
   render() { 
@@ -25,7 +38,7 @@ class App extends Component {
     return ( 
       <div className="App">
         {
-          isLogged ? null : <Login />
+          isLogged ? null : <Login login = {this.login} />
         }
       </div>
     );
