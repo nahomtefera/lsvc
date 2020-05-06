@@ -10,18 +10,20 @@
 /* Users */
 .users-container {grid-area: sidebar;}
 .users-list {list-style: none; padding: 0;}
-.username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #666; display: flex; justify-content: space-between;}
+.username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #444; display: flex; justify-content: space-between;}
+.my-username-item {background: #fff; font-weight: 400;}
+.my-username-item strong {color: #000;}
 .username-item img {cursor: pointer;}
 /* Chat */
-.chat-container {position: relative;grid-area: chat;background: #fcfcfc;}
+.chat-container {position: relative;grid-area: chat;background: #eee;}
 .send-message-container {position: absolute;bottom: 5%;width: 700px;max-width: 80%;left: 0;right: 0;margin: auto; display: flex;}
 .chat-messages {width: 700px;padding: 2em 0;max-width: 80%;margin: auto;}
-.chat-message {display: flex; margin-top: -13px;}
+.chat-message {display: flex; margin-top: -13px; color: #333;}
 .my-message { justify-content: flex-end;margin-top: -5px;}
-.message-username {font-size: .8em; font-weight: 100;}
-.message-inner-container {display: inline-block; padding: .4em .8em; border: 1px solid #efefef; border-radius: 10px;}
+.message-username {font-size: .8em; font-weight: 100; color: #444;}
+.message-inner-container {display: inline-block; padding: .4em .8em;border-radius: 10px;}
 .chat-message .message-inner-container { background-color: white;}
-.my-message .message-inner-container {background-color: #0096881f;}
+.my-message .message-inner-container {background-color: #8bc34a8c;}
 
 .chat-btn { font-size: 1.4em; padding: .6em; color: white;background: #009688;border-color: #009688;border-radius: 10px;}
 .chat-msg { font-size: 1.4em; padding: .6em; width: 73%; border-radius: 10px; background: white; border: 2px solid #dedede;}
