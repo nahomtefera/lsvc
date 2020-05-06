@@ -23,13 +23,20 @@ class Chat extends Component {
     this.setState({message: ''}) 
   }
 
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      console.log(this.state.message)
+      this.sendMessage(this.state.message)
+    }
+  }
+
+
   render() { 
     let message = this.state.message;
     let chatMessages = this.state.chatMessages;
     let handleChange = this.handleChange;
     let sendMessage = this.sendMessage;
     let myId = socket.id;
-    console.log(message, myId)
     return ( 
       <div className='chat-container'>
         <div className="chat-messages">
@@ -37,8 +44,8 @@ class Chat extends Component {
             chatMessages.length === 0
               ? null
               : chatMessages.map((message, index) => {
-                return  <Fragment>
-                          <div key={index} className={message.id == myId ? 'chat-message my-message' : 'chat-message'}>
+                return  <Fragment key={index}>
+                          <div className={message.id == myId ? 'chat-message my-message' : 'chat-message'}>
                             <div className='message-inner-container'>
                               { message.id == myId ? null : <Fragment><span className='message-username'>{message.user}</span> <br/></Fragment>} {message.msg}
                             </div>
@@ -50,7 +57,7 @@ class Chat extends Component {
         </div>
 
         <div className="send-message-container">
-          <input type="text" className="chat-msg" onChange={(e)=>{handleChange(e.target.value, 'message')}} value={message}/>
+          <input type="text" className="chat-msg" onKeyPress={this.handleKeyPress} onChange={(e)=>{handleChange(e.target.value, 'message')}} value={message}/>
           <button className="chat-btn" onClick={()=>{sendMessage(message)}}>Send</button>
         </div>
       </div>

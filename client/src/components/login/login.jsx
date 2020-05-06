@@ -10,6 +10,12 @@ class Login extends Component {
 
   handleChange = (value, target) => {this.setState({[target]: value })} 
 
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      this.login()
+    }
+  }
+
   login = () =>{
     let username = this.state.username;
     // If username field is not blank emit new user
@@ -30,6 +36,7 @@ class Login extends Component {
     return ( 
       <div className='login-container'>
         <input autoComplete="off" type="text" className='username'
+          onKeyPress={this.handleKeyPress}
           onChange={(e) => {handleChange(e.target.value, 'username')}} 
           value={username} 
         />
