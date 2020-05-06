@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {socket} from '../socketComp/socketComp';
 
 class Chat extends Component {
@@ -37,9 +37,14 @@ class Chat extends Component {
             chatMessages.length === 0
               ? null
               : chatMessages.map((message, index) => {
-                return  <div key={index} className={message.id == myId ? 'chat-message my-message' : 'chat-message'}>
-                          { message.id == myId ? null : <strong>{message.user}</strong>} {message.msg}
-                        </div>
+                return  <Fragment>
+                          <div key={index} className={message.id == myId ? 'chat-message my-message' : 'chat-message'}>
+                            <div className='message-inner-container'>
+                              { message.id == myId ? null : <Fragment><span className='message-username'>{message.user}</span> <br/></Fragment>} {message.msg}
+                            </div>
+                          </div>
+                          <br/>
+                        </Fragment>
               })
           }
         </div>
