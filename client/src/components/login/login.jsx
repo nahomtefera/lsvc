@@ -37,6 +37,7 @@ class Login extends Component {
       <div className='login-container'>
         <input autoComplete="off" type="text" className='username'
           onKeyPress={this.handleKeyPress}
+          placeholder='Enter your name'
           onChange={(e) => {handleChange(e.target.value, 'username')}} 
           value={username} 
         />
