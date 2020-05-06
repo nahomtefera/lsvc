@@ -41,18 +41,19 @@ class Livestream extends Component {
 
   componentDidMount() {
     let self = this;
-
+    // adding a new video from another user
     pc.onaddstream = function (obj) {
-      console.log('pscstream:', obj)
+      var videoContainer = document.createElement('div')
       var vid = document.createElement('video');
-      vid.setAttribute('class', 'video-stream');
+      videoContainer.setAttribute('class', 'video-inner-container');
       vid.setAttribute('autoplay', 'autoplay');
-      vid.setAttribute('id', 'video-small');
-      document.getElementById('video-container').appendChild(vid);
       vid.srcObject = obj.stream;
+      videoContainer.appendChild(vid)
+      document.getElementById('video-container').appendChild(videoContainer);
     }
-
+    // user session video
     navigator.getUserMedia({video: true, audio: true}, function (stream) {
+      console.log('videostream started')
       var video = document.querySelector('video');
       video.srcObject = stream;
       pc.addStream(stream);
@@ -94,7 +95,6 @@ class Livestream extends Component {
   createOffer = (id) =>{
     let self = this;
     pc.createOffer(function (offer) {
-      console.log('making offer: ', offer)
         pc.setLocalDescription(new sessionDescription(offer), function () {
             socket.emit('make-offer', {
                 offer: offer,

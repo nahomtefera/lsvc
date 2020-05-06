@@ -32,10 +32,14 @@
 .videostream-container {
   position: relative; grid-area: video;
   max-width: 100%;
-}
-#video-container {
-  max-width: 50%;
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.video-inner-container {
+  max-width: 50%;
+  /* display: flex; */
   /* flex-wrap: wrap; */
 }
 

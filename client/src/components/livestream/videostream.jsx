@@ -8,8 +8,8 @@ class VideoStream extends Component {
 
   render() { 
     return ( 
-      <div className='videostream-container'>
-        <div id="video-container">
+      <div id="video-container" className='videostream-container'>
+        <div className="video-inner-container">
           <video className="video-stream" autoPlay muted></video>
         </div>
       </div>
