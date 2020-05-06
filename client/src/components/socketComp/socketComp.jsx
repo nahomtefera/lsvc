@@ -11,7 +11,9 @@ class Socket extends Component {
   }
 
   componentDidMount() {
-    socket = io.connect('http://localhost:8080')
+    process.env.NODE_ENV === 'development'
+     ? socket = io.connect('http://localhost:8080')
+     : socket = io.connect('https://localhost:8080')
   }
 
   render() { 
