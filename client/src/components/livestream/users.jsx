@@ -30,7 +30,7 @@ class Users extends Component {
     let createOffer = this.props.createOffer // function to request video call
     return ( 
       <div className="users-container">
-        <h3 styles={{fontWeight: '500', padding: '1em .5em'}}>Online Users</h3>
+        <h3 className='online-users-title'>Online Users</h3>
         <ul className="users-list">
           {
             users.map((user, index) => {

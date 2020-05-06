@@ -8,8 +8,9 @@
     "sidebar chat video";
 }
 /* Users */
-.users-container {grid-area: sidebar;}
-.users-list {list-style: none; padding: 0;}
+.users-container {grid-area: sidebar;} 
+.online-users-title {padding: .2em .8em; margin-bottom: 0;text-transform: uppercase; color: #b0b0b0; font-weight: 500;}
+.users-list {list-style: none; padding: 0; margin-top: .4em;}
 .username-item {padding: 1em; font-weight: bold; background: #fafafa; padding: 1em; color: #444; display: flex; justify-content: space-between;}
 .my-username-item {background: #fff; font-weight: 400;}
 .my-username-item strong {color: #000;}
