@@ -18,13 +18,18 @@ class Chat extends Component {
 
   handleChange = (value, target) => {this.setState({[target]: value })} 
 
-  sendMessage = (message) => { socket.emit('send message', message); this.setState({message: ''}) }
+  sendMessage = (message) => { 
+    socket.emit('send message', message); 
+    this.setState({message: ''}) 
+  }
 
   render() { 
     let message = this.state.message;
     let chatMessages = this.state.chatMessages;
     let handleChange = this.handleChange;
     let sendMessage = this.sendMessage;
+    let myId = socket.id;
+    console.log(message, myId)
     return ( 
       <div className='chat-container'>
         <div className="chat-messages">
@@ -32,7 +37,9 @@ class Chat extends Component {
             chatMessages.length === 0
               ? null
               : chatMessages.map((message, index) => {
-                return <div key={index} className='chat-message'><strong>{message.user}</strong> {message.msg}</div>
+                return  <div key={index} className={message.id == myId ? 'chat-message my-message' : 'chat-message'}>
+                          { message.id == myId ? null : <strong>{message.user}</strong>} {message.msg}
+                        </div>
               })
           }
         </div>

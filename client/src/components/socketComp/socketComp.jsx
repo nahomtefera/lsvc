@@ -16,7 +16,7 @@ class Socket extends Component {
     let socketUrl;
     process.env.NODE_ENV === 'production'
      ? socketUrl = 'https://livestreamm.herokuapp.com/'
-     : socketUrl = 'https://livestreamm.herokuapp.com'
+     : socketUrl = 'localhost:8080'
     
     console.log(socketUrl)
     socket = io.connect(socketUrl, {secure: true})
