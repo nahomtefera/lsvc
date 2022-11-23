@@ -11,7 +11,7 @@
     "cors": "^2.8.5",
     "express": "*",
     "nodemon": "^2.0.3",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.3.0"
   },
   "author": "Nahom Endale",
